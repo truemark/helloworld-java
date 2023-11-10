@@ -8,6 +8,7 @@ pipelines:
           caches:
             - maven
             - maven-wrapper
+            - docker
           script:
             - export VERSION=$BITBUCKET_BUILD_NUMBER.RELEASE
             - ./mvnw -Drevision=$VERSION package
