@@ -1,0 +1,5 @@
+message: Hello world!
+logging:
+  level:
+    root: warn
+    com.truemark.demo.helloworld: trace
