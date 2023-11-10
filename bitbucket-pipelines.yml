@@ -1,0 +1,24 @@
+image: openjdk:11-jdk-stretch
+
+pipelines:
+  branches:
+    master:
+      - step:
+          name: Build
+          caches:
+            - maven
+            - maven-wrapper
+          script:
+            - export VERSION=$BITBUCKET_BUILD_NUMBER.RELEASE
+            - ./mvnw -Drevision=$VERSION package
+            - docker build -t truemark/helloworld-java:$VERSION
+            - docker login --username $DOCKER_HUB_USER --password $DOCKER_HUB_PASS
+            - docker tag triuemark/helloworld:$VERSION truemark/helloworld
+            - docker push truemark/helloworld
+          services:
+            - docker
+          artifacts:
+            - 'target/**'
+definitions:
+  caches:
+    maven-wrapper: ~/.m2/wrapper
