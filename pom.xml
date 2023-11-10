@@ -15,7 +15,7 @@
     <description>TrueMark Hello World Demo project</description>
 
     <properties>
-        <reviosin>0-SNAPSHOT</reviosin>
+        <revision>0-SNAPSHOT</revision>
         <java.version>11</java.version>
     </properties>
 
