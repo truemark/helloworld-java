@@ -6,8 +6,8 @@ spring:
 server:
   forward-headers-strategy: FRAMEWORK
 info:
-  version: @project.version@
-  name: @project.name@
+  version: "@project.version@"
+  name: helloworld
 logging:
   level:
     root: warn

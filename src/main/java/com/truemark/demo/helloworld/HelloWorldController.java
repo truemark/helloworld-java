@@ -53,7 +53,7 @@ public class HelloWorldController {
         log.trace(str);
     }
 
-//    @RequestMapping(value = "**")
+    @RequestMapping(value = "**")
     public ResponseEntity<Hello> hello(HttpServletRequest req) {
         if (log.isTraceEnabled()) {
             logRequest(req);
