@@ -13,7 +13,7 @@ pipelines:
             - ./mvnw -Drevision=$VERSION package
             - docker build -t truemark/helloworld-java:$VERSION .
             - docker login --username $DOCKER_HUB_USER --password $DOCKER_HUB_PASS
-            - docker tag triuemark/helloworld:$VERSION truemark/helloworld
+            - docker tag truemark/helloworld:$VERSION truemark/helloworld
             - docker push truemark/helloworld
           services:
             - docker
