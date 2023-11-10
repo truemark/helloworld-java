@@ -11,7 +11,7 @@ pipelines:
           script:
             - export VERSION=$BITBUCKET_BUILD_NUMBER.RELEASE
             - ./mvnw -Drevision=$VERSION package
-            - docker build -t truemark/helloworld-java:$VERSION
+            - docker build -t truemark/helloworld-java:$VERSION .
             - docker login --username $DOCKER_HUB_USER --password $DOCKER_HUB_PASS
             - docker tag triuemark/helloworld:$VERSION truemark/helloworld
             - docker push truemark/helloworld
