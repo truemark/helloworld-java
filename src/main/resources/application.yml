@@ -1,7 +1,13 @@
 message: Hello world!
 # Be aware, this is generally unsafe unless you tryst your reverse-proxy
+spring:
+  application:
+    name: helloworld
 server:
   forward-headers-strategy: FRAMEWORK
+info:
+  version: @project.version@
+  name: @project.name@
 logging:
   level:
     root: warn
