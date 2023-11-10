@@ -1,4 +1,7 @@
 message: Hello world!
+# Be aware, this is generally unsafe unless you tryst your reverse-proxy
+server:
+  forward-headers-strategy: FRAMEWORK
 logging:
   level:
     root: warn
