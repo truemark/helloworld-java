@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.CacheControl;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -52,11 +54,13 @@ public class HelloWorldController {
     }
 
     @RequestMapping(value = "**")
-    public Hello hello(HttpServletRequest req) {
+    public ResponseEntity<Hello> hello(HttpServletRequest req) {
         if (log.isTraceEnabled()) {
             logRequest(req);
         }
-        return new Hello().setMessage(message);
+        return ResponseEntity.ok()
+                .cacheControl(CacheControl.noStore())
+                .body(new Hello().setMessage(message));
     }
 
 }
