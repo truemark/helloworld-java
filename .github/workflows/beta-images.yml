@@ -48,7 +48,7 @@ jobs:
             --push \
             --platform linux/arm64,linux/amd64 \
             -f Dockerfile \
-            -t truemark/helloworld-java:61.${{ github.run_id }}.${{ github.run_attempt }}-SNAPSHOT \
+            -t truemark/helloworld-java:61.${{ github.run_number }}.${{ github.run_attempt }}-SNAPSHOT \
             .
 #      - name: Copy beta to ECR
 #        uses: truemark/skopeo-copy-action@v1
