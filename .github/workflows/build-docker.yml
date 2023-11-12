@@ -1,6 +1,9 @@
 on:
   workflow_call:
     secrets:
+      aws_assume_role:
+        description: "AWS role to assume"
+        required: false
       docker_hub_username:
         description: "Docker Hub username"
         required: false
@@ -20,6 +23,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
+      AWS_ASSUME_ROLE: ${{ secrets.aws_assume_role }}
       DOCKER_HUB_USERNAME: ${{ secrets.docker_hub_username }}
       DOCKER_HUB_PASSWORD: ${{ secrets.docker_hub_password }}
     steps:
@@ -27,12 +31,27 @@ jobs:
         uses: actions/checkout@v4
       - name: Download artifacts
         uses: actions/download-artifact@v3
+
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         if: env.DOCKER_HUB_USERNAME != '' && env.DOCKER_HUB_PASSWORD != ''
         with:
           username: ${{ secrets.docker_hub_username }}
           password: ${{ secrets.docker_hub_password }}
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        if: env.AWS_ASSUME_ROLE != ''
+        with:
+          role-to-assume: "${{ secrets.aws_assume_role }}"
+          aws-region: "us-east-1"
+      - name: Login to ECR
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v2
+        if: env.AWS_ASSUME_ROLE != ''
+        with:
+          registry-type: public
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -45,3 +64,14 @@ jobs:
             -f Dockerfile \
             -t ${{ inputs.image_name }}:${{ inputs.version }} \
             .
+      - name: Copy beta to ECR
+        uses: truemark/skopeo-copy-action@v1
+        if: env.AWS_ASSUME_ROLE != ''
+        with:
+          src-image: "docker://${{ inputs.image_name }}:${{ inputs.version }}"
+          dest-image: "docker://public.ecr.aws/${{ inputs.image_name }}:${{ inputs.version }}"
+          src-username: "${{ secrets.docker_hub_username }}"
+          src-password: "${{ secrets.docker_hub_password }}"
+          dest-username: "${{ steps.ecr-login.outputs.docker_username_public_ecr_aws }}"
+          dest-password: "${{ steps.ecr-login.outputs.docker_password_public_ecr_aws }}"
+          multi-arch: "all"
