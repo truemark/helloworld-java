@@ -38,3 +38,9 @@ jobs:
           distribution: ${{ inputs.java_distribution }}
       - name: Build Java
         run: ./mvnw -Drevision=${VERSION} package
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: target
+          path: |
+            target/**

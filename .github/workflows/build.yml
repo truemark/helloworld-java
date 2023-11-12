@@ -8,6 +8,7 @@ permissions:
   contents: write
 jobs:
   call-reusable-workflow:
+    name: Build Maven
     uses: ./.github/workflows/build-maven.yml
     with:
         major_version: 61
