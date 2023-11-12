@@ -19,6 +19,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      DOCKER_HUB_USERNAME: ${{ secrets.docker_hub_username }}
+      DOCKER_HUB_PASSWORD: ${{ secrets.docker_hub_password }}
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v3
@@ -26,8 +29,8 @@ jobs:
         uses: docker/login-action@v2
         if: secrets.docker_hub_username != ''
         with:
-          username: ${{ secrets.docker_hub_username }}
-          password: ${{ secrets.docker_hub_password }}
+          username: ${{ DOCKER_HUB_USERNAME }}
+          password: ${{ DOCKER_HUB_PASSWORD }}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
