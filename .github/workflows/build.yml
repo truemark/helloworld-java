@@ -20,7 +20,7 @@ jobs:
     with:
         major_version: 61
         image_name: "truemark/helloworld-java"
-    needs: [build-docker]
+    needs: [build-maven]
 #  build:
 #    runs-on: ubuntu-latest
 #    steps:
