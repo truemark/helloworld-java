@@ -23,6 +23,8 @@ jobs:
       DOCKER_HUB_USERNAME: ${{ secrets.docker_hub_username }}
       DOCKER_HUB_PASSWORD: ${{ secrets.docker_hub_password }}
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Download artifacts
         uses: actions/download-artifact@v3
       - name: Login to Docker Hub
