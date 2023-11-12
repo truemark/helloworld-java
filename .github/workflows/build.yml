@@ -1,19 +1,17 @@
-name: beta
-
 on:
   workflow_dispatch:
   push:
     branches:
       - develop
-
 permissions:
   id-token: write
   contents: write
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Version
+        run: echo "VERSION=61.${{ github.run_number }}.${{ github.run_attempt }}-SNAPSHOT" >> $GITHUB_ENV
       - name: Checkout
         uses: actions/checkout@v3
       - name: Login to Docker Hub
@@ -41,14 +39,14 @@ jobs:
           java-version: "21"
           distribution: "corretto"
       - name: Build Java
-        run: ./mvnw -Drevision=61.${{ github.run_id }}.${{ github.run_attempt }}-SNAPSHOT package
+        run: ./mvnw -Drevision=61.${VERSION} package
       - name: Build Docker
         run: |
           docker buildx build \
             --push \
             --platform linux/arm64,linux/amd64 \
             -f Dockerfile \
-            -t truemark/helloworld-java:61.${{ github.run_number }}.${{ github.run_attempt }}-SNAPSHOT \
+            -t truemark/helloworld-java:${VERSION} \
             .
 #      - name: Copy beta to ECR
 #        uses: truemark/skopeo-copy-action@v1
