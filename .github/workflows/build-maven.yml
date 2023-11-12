@@ -1,11 +1,10 @@
 on:
   workflow_call:
     inputs:
-      major_version:
-        description: "Major version of the project"
-        required: false
-        default: 1
-        type: number
+      version:
+        description: "Version of the project"
+        required: true
+        type: string
       java_version:
         description: "Java version to use"
         required: false
@@ -22,8 +21,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Version
-        run: echo "VERSION=${{ inputs.major_version }}.${{ github.run_number }}.${{ github.run_attempt }}-SNAPSHOT" >> $GITHUB_ENV
       - name: Maven Cache
         uses: actions/cache@v3
         with:
@@ -37,7 +34,7 @@ jobs:
           java-version: ${{ inputs.java_version }}
           distribution: ${{ inputs.java_distribution }}
       - name: Build Java
-        run: ./mvnw -Drevision=${VERSION} package
+        run: ./mvnw -Drevision=${{ inputs.version }} package
       - name: Upload Target
         uses: actions/upload-artifact@v3
         with:
