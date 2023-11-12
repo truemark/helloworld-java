@@ -7,19 +7,20 @@ permissions:
   id-token: write
   contents: write
 jobs:
-  call-reusable-workflow:
+  build-maven:
     name: Build Maven
     uses: ./.github/workflows/build-maven.yml
     with:
         major_version: 61
         java_version: 21
         java_distribution: "corretto"
-  call-reusable-workflow-2:
+  build-docker:
     name: Build Docker
     uses: ./.github/workflows/build-docker.yml
     with:
         major_version: 61
         image_name: "truemark/helloworld-java"
+    needs: [build-docker]
 #  build:
 #    runs-on: ubuntu-latest
 #    steps:
