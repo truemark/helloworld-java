@@ -14,6 +14,12 @@ jobs:
         major_version: 61
         java_version: 21
         java_distribution: "corretto"
+  call-reusable-workflow-2:
+    name: Build Docker
+    uses: ./.github/workflows/build-docker.yml
+    with:
+        major_version: 61
+        image_name: "truemark/helloworld-java"
 #  build:
 #    runs-on: ubuntu-latest
 #    steps:
