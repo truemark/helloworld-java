@@ -7,7 +7,6 @@ permissions:
   id-token: write
   contents: write
 jobs:
-
   build-maven:
     name: Build Maven
     uses: ./.github/workflows/build-maven.yml

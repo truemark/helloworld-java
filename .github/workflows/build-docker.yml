@@ -5,7 +5,7 @@ on:
         description: "Docker Hub username"
         required: false
       docker_hub_password:
-        description: "Docker Hub password"
+        description: "Docker Hub password or token"
         required: false
     inputs:
       image_name:
@@ -29,8 +29,8 @@ jobs:
         uses: docker/login-action@v2
         if: env.DOCKER_HUB_USERNAME != '' && env.DOCKER_HUB_PASSWORD != ''
         with:
-          username: ${DOCKER_HUB_USERNAME}
-          password: ${DOCKER_HUB_PASSWORD}
+          username: ${{ secrets.docker_hub_username }}
+          password: ${{ secrets.docker_hub_password }}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
