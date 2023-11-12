@@ -7,54 +7,60 @@ permissions:
   id-token: write
   contents: write
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Version
-        run: echo "VERSION=61.${{ github.run_number }}.${{ github.run_attempt }}-SNAPSHOT" >> $GITHUB_ENV
-      - name: Maven Cache
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          role-to-assume: "${{ secrets.AWS_ASSUME_ROLE }}"
-          aws-region: "us-east-1"
-      - name: Login to ECR
-        id: ecr-login
-        uses: aws-actions/amazon-ecr-login@v2
-        with:
-          registry-type: public
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Setup Java
-        uses: actions/setup-java@v3
-        with:
-          java-version: "21"
-          distribution: "corretto"
-      - name: Build Java
-        run: ./mvnw -Drevision=61.${VERSION} package
-      - name: Build Docker
-        run: |
-          docker buildx build \
-            --push \
-            --platform linux/arm64,linux/amd64 \
-            -f Dockerfile \
-            -t truemark/helloworld-java:${VERSION} \
-            .
+  call-reusable-workflow:
+    uses: .github/workflows/build-maven.yml
+    with:
+        major_version: 61
+        java_version: 21
+        java_distribution: "corretto"
+#  build:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v4
+#      - name: Version
+#        run: echo "VERSION=61.${{ github.run_number }}.${{ github.run_attempt }}-SNAPSHOT" >> $GITHUB_ENV
+#      - name: Maven Cache
+#        uses: actions/cache@v3
+#        with:
+#          path: ~/.m2/repository
+#          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+#          restore-keys: |
+#            ${{ runner.os }}-maven-
+#      - name: Login to Docker Hub
+#        uses: docker/login-action@v2
+#        with:
+#          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+#          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+#      - name: Configure AWS Credentials
+#        uses: aws-actions/configure-aws-credentials@v2
+#        with:
+#          role-to-assume: "${{ secrets.AWS_ASSUME_ROLE }}"
+#          aws-region: "us-east-1"
+#      - name: Login to ECR
+#        id: ecr-login
+#        uses: aws-actions/amazon-ecr-login@v2
+#        with:
+#          registry-type: public
+#      - name: Set up QEMU
+#        uses: docker/setup-qemu-action@v3
+#      - name: Set up Docker Buildx
+#        uses: docker/setup-buildx-action@v3
+#      - name: Setup Java
+#        uses: actions/setup-java@v3
+#        with:
+#          java-version: "21"
+#          distribution: "corretto"
+#      - name: Build Java
+#        run: ./mvnw -Drevision=61.${VERSION} package
+#      - name: Build Docker
+#        run: |
+#          docker buildx build \
+#            --push \
+#            --platform linux/arm64,linux/amd64 \
+#            -f Dockerfile \
+#            -t truemark/helloworld-java:${VERSION} \
+#            .
 #      - name: Copy beta to ECR
 #        uses: truemark/skopeo-copy-action@v1
 #        with:
