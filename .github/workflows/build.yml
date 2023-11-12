@@ -18,12 +18,11 @@ jobs:
   build-docker:
     name: Build Docker
     uses: ./.github/workflows/build-docker.yml
-    secrets:
-      docker_hub_username: ${{ secrets.DOCKER_HUB_USERNAME }}
-      docker_hub_password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
     with:
       version: 61.${{ github.run_number }}.${{ github.run_attempt }}-SNAPSHOT
       image_name: "truemark/helloworld-java"
+      docker_hub_username: ${{ secrets.DOCKER_HUB_USERNAME }}
+      docker_hub_password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
     needs: [build-maven]
 #  build:
 #    runs-on: ubuntu-latest
