@@ -2,7 +2,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - develop
+      - main
 permissions:
   id-token: write
   contents: write
@@ -11,28 +11,24 @@ jobs:
     name: Build Maven
     uses: ./.github/workflows/build-maven.yml
     with:
-      version: 61.${{ github.run_number }}.${{ github.run_attempt }}-SNAPSHOT
+      version: 61.${{ github.run_number }}.${{ github.run_attempt }}
       java_version: 21
       java_distribution: "corretto"
   build-docker:
     name: Build Docker
     uses: ./.github/workflows/build-docker.yml
     with:
-      version: 61.${{ github.run_number }}.${{ github.run_attempt }}-SNAPSHOT
+      version: 61.${{ github.run_number }}.${{ github.run_attempt }}
       image_name: "truemark/helloworld-java"
     secrets:
       aws_assume_role: ${{ secrets.AWS_ASSUME_ROLE }}
       docker_hub_username: ${{ secrets.DOCKER_HUB_USERNAME }}
       docker_hub_password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
     needs: [build-maven]
-  deploy-qa:
-    name: Deploy to QA
-    uses: ./.github/workflows/deploy.yml
-    needs: [build-docker]
   deploy-stage:
     name: Deploy to Stage
     uses: ./.github/workflows/deploy.yml
-    needs: [deploy-qa]
+    needs: [build-docker]
   deploy-prod:
     name: Deploy to Prod
     uses: ./.github/workflows/deploy.yml
