@@ -28,8 +28,12 @@ jobs:
   deploy-stage:
     name: Deploy to Stage
     uses: ./.github/workflows/deploy.yml
+    with:
+      environment: "stage"
     needs: [build-docker]
   deploy-prod:
     name: Deploy to Prod
     uses: ./.github/workflows/deploy.yml
+    with:
+      environment: "prod"
     needs: [deploy-stage]
