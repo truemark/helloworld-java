@@ -1,0 +1,13 @@
+fullnameOverride: "hello-world"
+serviceAccount:
+  create: false
+
+service:
+  port: 8080
+
+nodeSelector:
+  kubernetes.io/arch: amd64
+
+image:
+  repository: public.ecr.aws/truemark/helloworld-java
+  tag: "61.29.1"
