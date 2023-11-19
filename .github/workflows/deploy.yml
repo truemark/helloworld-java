@@ -35,7 +35,6 @@ jobs:
           echo 'EOF' >> $GITHUB_ENV
         env:
           AWS_REGION: "us-east-1"
-        needs: [build-docker]
 
       - name: Helm Deploy
         uses: koslib/helm-eks-action@v1.28.0
