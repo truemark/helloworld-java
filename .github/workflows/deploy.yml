@@ -25,7 +25,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v2
         if: env.AWS_ASSUME_ROLE != ''
         with:
-          role-to-assume: "${{ secrets.AWS_ASSUME_ROLE }}"
+          role-to-assume: "${{ secrets.aws_assume_role }}"
           aws-region: "us-east-1"
 
       - name: Setup Cluster Access
