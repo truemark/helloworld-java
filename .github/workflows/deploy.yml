@@ -43,4 +43,4 @@ jobs:
         env:
           KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}
         with:
-          command: helm upgrade hello-world helm-charts/truemark --install --wait --set image.tag ${{ inputs.version }} -f helm-charts/truemark/values.yaml
+          command: helm upgrade hello-world helm-charts/truemark --install --wait --set image.tag=${{ inputs.version }} -f helm-charts/truemark/values.yaml
