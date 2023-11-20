@@ -25,7 +25,7 @@ jobs:
 #        if: env.AWS_ASSUME_ROLE != ''
         with:
           role-to-assume: "${{ secrets.aws_assume_role }}"
-          aws-region: "us-east-1"
+          aws-region: "us-east-2"
 
       - name: Setup Cluster Access
         run: |
@@ -34,7 +34,7 @@ jobs:
           echo $(cat ./kubeconfig | base64) >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
         env:
-          AWS_REGION: "us-east-1"
+          AWS_REGION: "us-east-2"
 
       - name: Helm Deploy
         uses: koslib/helm-eks-action@v1.28.0
