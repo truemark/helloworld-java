@@ -30,11 +30,15 @@ jobs:
     uses: ./.github/workflows/deploy.yml
     with:
       environment: "stage"
+      version: 61.${{ github.run_number }}.${{ github.run_attempt }}
+      aws_assume_role: ${{ vars.AWS_ASSUME_ROLE_DEPLOY }}
     needs: [build-docker]
   deploy-prod:
     name: Deploy to Prod
     uses: ./.github/workflows/deploy.yml
     with:
       environment: "prod"
+      version: 61.${{ github.run_number }}.${{ github.run_attempt }}
+      aws_assume_role: ${{ vars.AWS_ASSUME_ROLE_DEPLOY }}
     needs: [deploy-stage]
 

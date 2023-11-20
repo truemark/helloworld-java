@@ -1,14 +1,46 @@
 on:
   workflow_call:
     inputs:
+      aws_assume_role:
+        description: "AWS role to assume"
+        required: false
+        type: string
       environment:
         description: "Environment to deploy to"
+        required: true
+        type: string
+      version:
+        description: "Version of the project"
         required: true
         type: string
 jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
+    env:
+      AWS_ASSUME_ROLE: ${{ inputs.aws_assume_role }}
     steps:
-      - name: Deploy
-        run: echo "Deploy"
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        if: env.AWS_ASSUME_ROLE != ''
+        with:
+          role-to-assume: "${{ inputs.aws_assume_role }}"
+          aws-region: "us-east-2"
+
+      - name: Setup Cluster Access
+        run: |
+          aws eks update-kubeconfig --name ${{ vars.CLUSTER_NAME }} --kubeconfig ./kubeconfig
+          echo 'KUBE_CONFIG_DATA<<EOF' >> $GITHUB_ENV
+          echo $(cat ./kubeconfig | base64) >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+        env:
+          AWS_REGION: "us-east-2"
+
+      - name: Helm Deploy
+        uses: koslib/helm-eks-action@v1.28.0
+        env:
+          KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}
+        with:
+          command: helm upgrade --install --wait --atomic --set image.tag=${{ inputs.version }} -f helm-charts/truemark/values.yaml hello-world helm-charts/truemark
