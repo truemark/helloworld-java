@@ -1,10 +1,9 @@
 on:
   workflow_call:
-    secrets:
+    inputs:
       aws_assume_role:
         description: "AWS role to assume"
         required: false
-    inputs:
       environment:
         description: "Environment to deploy to"
         required: true
