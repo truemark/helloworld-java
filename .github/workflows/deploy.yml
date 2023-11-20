@@ -1,10 +1,6 @@
 on:
   workflow_call:
     inputs:
-      aws_assume_role:
-        description: "AWS role to assume"
-        required: false
-        type: string
       environment:
         description: "Environment to deploy to"
         required: true
@@ -17,16 +13,13 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
-    env:
-      AWS_ASSUME_ROLE_DEPLOY: ${{ inputs.aws_assume_role }}
     steps:
       - uses: actions/checkout@v4
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
-        if: inputs.aws_assume_role != ''
         with:
-          role-to-assume: "${{ inputs.aws_assume_role }}"
+          role-to-assume: "${{ vars.AWS_ASSUME_ROLE_DEPLOY }}"
           aws-region: "us-east-2"
 
       - name: Setup Cluster Access
