@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     env:
-      AWS_ASSUME_ROLE: ${{ inputs.aws_assume_role }}
+      AWS_ASSUME_ROLE_DEPLOY: ${{ inputs.aws_assume_role }}
     steps:
       - uses: actions/checkout@v4
 
