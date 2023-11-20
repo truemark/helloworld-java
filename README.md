@@ -30,7 +30,4 @@ To deploy the helm chart run the following command from the root of the repo dir
 ```bash
 helm install hello-world ./helm-charts/truemark -f helm-charts/values-test.yml
 ```
-Until the load balancer gets deployed you can run the following port forwarding command to test the service:
-```bash
-sudo kubectl port-forward svc/istio-gateway-external -n istio-system 80:80
-```
+

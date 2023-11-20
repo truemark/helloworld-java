@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     env:
-      AWS_ASSUME_ROLE: ${{ secrets.aws_assume_role }}
+      AWS_ASSUME_ROLE: ${{ inputs.aws_assume_role }}
     steps:
       - uses: actions/checkout@v4
 
@@ -26,12 +26,12 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v2
         if: env.AWS_ASSUME_ROLE != ''
         with:
-          role-to-assume: "${{ secrets.aws_assume_role }}"
+          role-to-assume: "${{ inputs.aws_assume_role }}"
           aws-region: "us-east-2"
 
       - name: Setup Cluster Access
         run: |
-          aws eks update-kubeconfig --name ${{ vars.CLUSTER_NAME }} --region $AWS_REGION --kubeconfig ./kubeconfig
+          aws eks update-kubeconfig --name ${{ vars.CLUSTER_NAME }} --kubeconfig ./kubeconfig
           echo 'KUBE_CONFIG_DATA<<EOF' >> $GITHUB_ENV
           echo $(cat ./kubeconfig | base64) >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
