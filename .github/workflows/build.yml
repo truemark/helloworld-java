@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - main
-      - k8s-deploy-stage
 permissions:
   id-token: write
   contents: write
@@ -32,7 +31,7 @@ jobs:
     with:
       environment: "stage"
       version: 61.${{ github.run_number }}.${{ github.run_attempt }}
-      aws_assume_role: "arn:aws:iam::068062034833:role/github-devops-provisioner"
+      aws_assume_role: ${{ vars.AWS_ASSUME_ROLE_DEPLOY_STAGE }}
     needs: [build-docker]
   deploy-prod:
     name: Deploy to Prod
@@ -40,6 +39,6 @@ jobs:
     with:
       environment: "prod"
       version: 61.${{ github.run_number }}.${{ github.run_attempt }}
-      aws_assume_role: "arn:aws:iam::178522259742:role/github-devops-provisioner"
+      aws_assume_role: ${{ vars.AWS_ASSUME_ROLE_DEPLOY_PROD }}
     needs: [deploy-stage]
 
