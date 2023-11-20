@@ -32,6 +32,8 @@ jobs:
     with:
       environment: "stage"
       version: 61.${{ github.run_number }}.${{ github.run_attempt }}
+    secrets:
+      aws_assume_role: ${{ secrets.AWS_ASSUME_ROLE }}
     needs: [build-docker]
   deploy-prod:
     name: Deploy to Prod
@@ -39,5 +41,7 @@ jobs:
     with:
       environment: "prod"
       version: 61.${{ github.run_number }}.${{ github.run_attempt }}
+    secrets:
+      aws_assume_role: ${{ secrets.AWS_ASSUME_ROLE }}
     needs: [deploy-stage]
 
