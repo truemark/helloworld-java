@@ -4,6 +4,10 @@ on:
     branches:
       - main
       - hotfix/*
+<<<<<<< HEAD
+=======
+      - fixing-rollback
+>>>>>>> 777d763 (Attempting to fix the rollback process.)
 permissions:
   id-token: write
   contents: write
@@ -59,4 +63,4 @@ jobs:
     needs: [cdk-deploy-prod]
     secrets:
       aws_assume_role: ${{ secrets.AWS_ASSUME_ROLE }}
-    needs: [deploy-stage]
+

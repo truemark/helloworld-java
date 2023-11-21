@@ -9,6 +9,7 @@ on:
         description: "Environment to deploy to"
         required: true
         type: string
+<<<<<<< HEAD
       version:
         description: "Version of the project"
         required: true
@@ -18,6 +19,8 @@ on:
         description: "AWS role to assume"
         required: false
 
+=======
+>>>>>>> 777d763 (Attempting to fix the rollback process.)
 jobs:
   deploy:
     runs-on: ubuntu-latest
