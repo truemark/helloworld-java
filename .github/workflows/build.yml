@@ -26,7 +26,7 @@ jobs:
       docker_hub_username: ${{ secrets.DOCKER_HUB_USERNAME }}
       docker_hub_password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
     needs: [build-maven]
-  cdk-diff-stage:
+  diff-stage:
     name: CDK diff to Stage
     uses: ./.github/workflows/cdk-diff.yml
 #    with:
@@ -34,36 +34,24 @@ jobs:
 #    secrets:
 #      aws_assume_role: ${{ secrets.AWS_ASSUME_ROLE }}
     needs: [ build-maven ]
-  cdk-deploy-stage:
-    name: CDK deploy to Stage
-    uses: ./.github/workflows/cdk-deploy.yml
-    with:
-      environment: "stage"
-    secrets:
-      aws_assume_role: ${{ secrets.AWS_ASSUME_ROLE }}
-    needs: [ cdk-diff-stage ]
-  eks-deploy-stage:
+  deploy-stage:
     if: github.ref == 'refs/heads/main'
-    name: EKS deploy to Stage
-    uses: ./.github/workflows/eks-deploy.yml
+    name: Deploy to Stage
+    uses: ./.github/workflows/deploy.yml
     with:
       environment: "stage"
       version: 61.${{ github.run_number }}.${{ github.run_attempt }}
-    needs: [cdk-deploy-stage, build-docker]
-  cdk-deploy-prod:
-    name: CDK deploy to Prod
-    uses: ./.github/workflows/cdk-deploy.yml
-    with:
-      environment: "prod"
     secrets:
       aws_assume_role: ${{ secrets.AWS_ASSUME_ROLE }}
-    needs: [ eks-deploy-stage ]
+    needs: [diff-stage, build-docker]
   eks-deploy-prod:
     if: github.ref == 'refs/heads/main'
-    name: EKS deploy to Prod
-    uses: ./.github/workflows/eks-deploy.yml
+    name: Deploy to Prod
+    uses: ./.github/workflows/deploy.yml
     with:
       environment: "prod"
       version: 61.${{ github.run_number }}.${{ github.run_attempt }}
-    needs: [cdk-deploy-prod]
+    secrets:
+      aws_assume_role: ${{ secrets.AWS_ASSUME_ROLE }}
+    needs: [deploy-stage]
 
