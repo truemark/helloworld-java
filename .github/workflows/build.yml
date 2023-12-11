@@ -28,7 +28,7 @@ jobs:
     needs: [build-maven]
   diff-stage:
     name: CDK diff to Stage
-    uses: ./.github/workflows/cdk-diff.yml
+    uses: ./.github/workflows/diff.yml
 #    with:
 #      environment: "stage"
 #    secrets:
