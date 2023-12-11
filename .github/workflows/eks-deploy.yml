@@ -5,6 +5,15 @@ on:
         description: "Environment to deploy to"
         required: true
         type: string
+      version:
+        description: "Version of the project"
+        required: true
+        type: string
+    secrets:
+      aws_assume_role:
+        description: "AWS role to assume"
+        required: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
