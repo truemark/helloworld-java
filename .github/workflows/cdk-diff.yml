@@ -11,8 +11,9 @@ on:
 #        type: string
 jobs:
   deploy:
-    # runs-on: public.ecr.aws/truemark/aws-cdk:ubuntu
-    runs-on: truemark/aws-cdk:ubuntu
+    runs-on: ubuntu-latest
+    container:
+      image: public.ecr.aws/truemark/aws-cdk:ubuntu
     steps:
       - uses: actions/checkout@v4
 
