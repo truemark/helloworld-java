@@ -26,6 +26,6 @@ jobs:
 
       - name: CDK Deploy
         run: |
-          pwd
-          ls -l
+          cd cdk
+          pnpm i --frozen-lockfile
           cdk -c env=${{ inputs.environment }} diff

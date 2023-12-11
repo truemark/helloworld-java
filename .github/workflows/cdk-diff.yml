@@ -25,7 +25,5 @@ jobs:
 
       - name: CDK Deploy
         run: |
-          pwd
-          ls -l
           echo "cdk diff run here"
 #          cdk -c env=${{ inputs.environment }} diff
