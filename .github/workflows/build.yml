@@ -14,13 +14,6 @@ jobs:
       version: 61.${{ github.run_number }}.${{ github.run_attempt }}
       java_version: 21
       java_distribution: "corretto"
-  cdk-diff:
-    name: CDK Diff
-    uses: ./.github/workflows/cdk-diff.yml
-    with:
-      environment: "stage"
-    secrets:
-      aws_assume_role: ${{ secrets.AWS_ASSUME_ROLE }}
   build-docker:
     name: Build Docker
     uses: ./.github/workflows/build-docker.yml
@@ -33,6 +26,14 @@ jobs:
       docker_hub_username: ${{ secrets.DOCKER_HUB_USERNAME }}
       docker_hub_password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
     needs: [build-maven]
+  cdk-deploy:
+    name: CDK Deploy
+    uses: ./.github/workflows/cdk-deploy.yml
+    with:
+      environment: "stage"
+    secrets:
+      aws_assume_role: ${{ secrets.AWS_ASSUME_ROLE }}
+    needs: [ build-maven ]
   deploy-stage:
     if: github.ref == 'refs/heads/main'
     name: Deploy to Stage
@@ -40,7 +41,7 @@ jobs:
     with:
       environment: "stage"
       version: 61.${{ github.run_number }}.${{ github.run_attempt }}
-    needs: [build-docker]
+    needs: [build-docker, cdk-deploy]
   deploy-prod:
     if: github.ref == 'refs/heads/main'
     name: Deploy to Prod
@@ -48,5 +49,5 @@ jobs:
     with:
       environment: "prod"
       version: 61.${{ github.run_number }}.${{ github.run_attempt }}
-    needs: [deploy-stage]
+    needs: [deploy-stage, cdk-deploy]
 
