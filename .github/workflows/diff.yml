@@ -10,7 +10,7 @@ on:
 #        required: true
 #        type: string
 jobs:
-  deploy:
+  diff:
     runs-on: ubuntu-latest
     container: # Replace with GitHub action in the future
       image: public.ecr.aws/truemark/aws-cdk:ubuntu
