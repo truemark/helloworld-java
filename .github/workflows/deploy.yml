@@ -33,7 +33,8 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: "${{ secrets.aws_assume_role }}"
+          # TODO Convert to secret
+          role-to-assume: "${{ vars.AWS_ASSUME_ROLE_DEPLOY }}"
           aws-region: "us-east-2"
 
       - name: CDK Deploy
