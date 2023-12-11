@@ -26,6 +26,14 @@ jobs:
       docker_hub_username: ${{ secrets.DOCKER_HUB_USERNAME }}
       docker_hub_password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
     needs: [build-maven]
+  cdk-diff-stage:
+    name: CDK diff to Stage
+    uses: ./.github/workflows/cdk-diff.yml
+    with:
+      environment: "stage"
+#    secrets:
+#      aws_assume_role: ${{ secrets.AWS_ASSUME_ROLE }}
+    needs: [ build-maven ]
   cdk-deploy-stage:
     name: CDK deploy to Stage
     uses: ./.github/workflows/cdk-deploy.yml
@@ -33,7 +41,7 @@ jobs:
       environment: "stage"
     secrets:
       aws_assume_role: ${{ secrets.AWS_ASSUME_ROLE }}
-    needs: [ build-docker ]
+    needs: [ cdk-diff-stage ]
   eks-deploy-stage:
     if: github.ref == 'refs/heads/main'
     name: EKS deploy to Stage
