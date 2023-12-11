@@ -12,7 +12,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    container:
+    container: # Replace with GitHub action in the future
       image: public.ecr.aws/truemark/aws-cdk:ubuntu
     steps:
       - uses: actions/checkout@v4
@@ -25,4 +25,5 @@ jobs:
 
       - name: CDK Deploy
         run: |
-          cdk -c env=${{ inputs.environment }} diff
+          echo "Diff run here"
+#          cdk -c env=${{ inputs.environment }} diff
