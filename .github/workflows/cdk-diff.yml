@@ -4,11 +4,11 @@ on:
 #      aws_assume_role:
 #        description: "AWS role to assume"
 #        required: false
-    inputs:
-      environment:
-        description: "Environment to deploy to"
-        required: true
-        type: string
+#    inputs:
+#      environment:
+#        description: "Environment to deploy to"
+#        required: true
+#        type: string
 jobs:
   deploy:
     # runs-on: public.ecr.aws/truemark/aws-cdk:ubuntu
