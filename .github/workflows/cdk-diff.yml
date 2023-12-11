@@ -1,14 +1,14 @@
 on:
   workflow_call:
+    secrets:
+      aws_assume_role:
+        description: "AWS role to assume"
+        required: false
     inputs:
       environment:
         description: "Environment to deploy to"
         required: true
         type: string
-    secrets:
-      aws_assume_role:
-        description: "AWS role to assume"
-        required: false
 jobs:
   diff:
     runs-on: public.ecr.aws/truemark/aws-cdk:ubuntu
@@ -19,7 +19,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: "${{ secrets.AWS_ASSUME_ROLE }}"
+          role-to-assume: "${{ secrets.aws_assume_role }}"
           aws-region: "us-east-2"
 
       - name: CDK Diff
