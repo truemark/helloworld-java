@@ -49,7 +49,7 @@ jobs:
     uses: ./.github/workflows/eks-deploy.yml
     with:
       environment: "stage"
-    needs: [build-docker, cdk-deploy-stage]
+    needs: [cdk-deploy-stage, docker-build]
   cdk-deploy-prod:
     name: CDK deploy to Prod
     uses: ./.github/workflows/cdk-deploy.yml
