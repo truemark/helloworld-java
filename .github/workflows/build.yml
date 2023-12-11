@@ -27,7 +27,7 @@ jobs:
       docker_hub_username: ${{ secrets.DOCKER_HUB_USERNAME }}
       docker_hub_password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
     needs: [build-maven]
-  cdk-deploy:
+  cdk-deploy-stage:
     name: CDK Deploy
     uses: ./.github/workflows/cdk-deploy.yml
     with:
@@ -35,19 +35,25 @@ jobs:
     secrets:
       aws_assume_role: ${{ secrets.AWS_ASSUME_ROLE }}
     needs: [ build-maven ]
-  deploy-stage:
+  eks-deploy-stage:
     if: github.ref == 'refs/heads/main'
     name: Deploy to Stage
     uses: ./.github/workflows/eks-deploy.yml
     with:
       environment: "stage"
-    needs: [build-docker, cdk-deploy]
-  deploy-prod:
+    needs: [build-docker, cdk-deploy-stage]
+  cdk-deploy-prod:
+    name: CDK Deploy
+    uses: ./.github/workflows/cdk-deploy.yml
+    with:
+      environment: "prod"
+    secrets:
+      aws_assume_role: ${{ secrets.AWS_ASSUME_ROLE }}
+    needs: [ build-maven ]
+  eks-deploy-prod:
     if: github.ref == 'refs/heads/main'
     name: Deploy to Prod
     uses: ./.github/workflows/eks-deploy.yml
     with:
       environment: "prod"
-    needs: [deploy-stage, cdk-deploy]
-
-
+    needs: [deploy-stage, cdk-prod]
