@@ -10,7 +10,7 @@ on:
         required: true
         type: string
 jobs:
-  diff:
+  deploy:
     runs-on: public.ecr.aws/truemark/aws-cdk:ubuntu
     environment: ${{ inputs.environment }}
     steps:
