@@ -30,17 +30,17 @@ jobs:
         with:
           name: docker-version
 
-#      - name: Configure AWS Credentials
-#        uses: aws-actions/configure-aws-credentials@v2
-#        with:
-#          role-to-assume: "${{ secrets.aws_assume_role }}"
-#          aws-region: "us-east-2"
-#
-#      - name: CDK Deploy
-#        run: |
-#          cd cdk
-#          pnpm i --frozen-lockfile
-#          cdk -c env=${{ inputs.environment }} deploy --require-approval never
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: "${{ secrets.aws_assume_role }}"
+          aws-region: "us-east-2"
+
+      - name: CDK Deploy
+        run: |
+          cd cdk
+          pnpm i --frozen-lockfile
+          cdk -c env=${{ inputs.environment }} deploy --require-approval never
 
       # TODO Get rid of separate role
       - name: Configure AWS Credentials
