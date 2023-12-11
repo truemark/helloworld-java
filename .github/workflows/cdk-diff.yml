@@ -1,0 +1,24 @@
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: "Environment to deploy to"
+        required: true
+        type: string
+jobs:
+  diff:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: "${{ secrets.AWS_ASSUME_ROLE }}"
+          aws-region: "us-east-2"
+
+      - name: CDK Diff
+        uses: public.ecr.aws/truemark/aws-cdk:alpine
+        run: |
+          cdk -c env=${{ inputs.environment }} diff
