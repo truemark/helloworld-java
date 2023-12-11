@@ -7,7 +7,7 @@ on:
         type: string
 jobs:
   diff:
-    runs-on: ubuntu-latest
+    runs-on: public.ecr.aws/truemark/aws-cdk:ubuntu
     environment: ${{ inputs.environment }}
     steps:
       - uses: actions/checkout@v4
@@ -19,6 +19,5 @@ jobs:
           aws-region: "us-east-2"
 
       - name: CDK Diff
-        uses: public.ecr.aws/truemark/aws-cdk:alpine
         run: |
           cdk -c env=${{ inputs.environment }} diff
