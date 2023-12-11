@@ -30,14 +30,24 @@ jobs:
         with:
           name: docker-version
 
+#      - name: Configure AWS Credentials
+#        uses: aws-actions/configure-aws-credentials@v2
+#        with:
+#          role-to-assume: "${{ secrets.aws_assume_role }}"
+#          aws-region: "us-east-2"
+#
+#      - name: CDK Deploy
+#        run: |
+#          cd cdk
+#          pnpm i --frozen-lockfile
+#          cdk -c env=${{ inputs.environment }} deploy --require-approval never
+
+      # TODO Get rid of separate role
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: "${{ secrets.aws_assume_role }}"
+          role-to-assume: "${{ vars.AWS_ASSUME_ROLE_DEPLOY }}"
           aws-region: "us-east-2"
-#        with:
-#          role-to-assume: "${{ vars.AWS_ASSUME_ROLE_DEPLOY }}"
-#          aws-region: "us-east-2"
 
       - name: Get Docker Image Tag
         shell: bash
@@ -52,12 +62,6 @@ jobs:
           echo 'EOF' >> $GITHUB_ENV
         env:
           AWS_REGION: "us-east-2"
-
-      - name: CDK Deploy
-        run: |
-          cd cdk
-          pnpm i --frozen-lockfile
-          cdk -c env=${{ inputs.environment }} deploy --require-approval never
 
       - name: Helm Deploy
         uses: koslib/helm-eks-action@v1.28.0
