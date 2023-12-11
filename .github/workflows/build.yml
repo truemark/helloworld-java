@@ -34,7 +34,7 @@ jobs:
       environment: "stage"
     secrets:
       aws_assume_role: ${{ secrets.AWS_ASSUME_ROLE }}
-    needs: [ build-maven ]
+    needs: [ build-docker ]
   eks-deploy-stage:
     if: github.ref == 'refs/heads/main'
     name: EKS deploy to Stage
