@@ -49,7 +49,7 @@ jobs:
     with:
       environment: "stage"
       version: 61.${{ github.run_number }}.${{ github.run_attempt }}
-    needs: [cdk-deploy-stage]
+    needs: [cdk-deploy-stage, docker-build]
   cdk-deploy-prod:
     name: CDK deploy to Prod
     uses: ./.github/workflows/cdk-deploy.yml
