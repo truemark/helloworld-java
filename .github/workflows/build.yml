@@ -49,11 +49,11 @@ jobs:
       environment: "prod"
     secrets:
       aws_assume_role: ${{ secrets.AWS_ASSUME_ROLE }}
-    needs: [ build-maven, cdk-deploy-stage ]
+    needs: [ eks-deploy-stage ]
   eks-deploy-prod:
     if: github.ref == 'refs/heads/main'
     name: EKS deploy to Prod
     uses: ./.github/workflows/eks-deploy.yml
     with:
       environment: "prod"
-    needs: [eks-deploy-stage, cdk-deploy-prod]
+    needs: [cdk-deploy-prod]
