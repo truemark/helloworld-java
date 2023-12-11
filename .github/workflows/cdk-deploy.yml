@@ -28,4 +28,4 @@ jobs:
         run: |
           cd cdk
           pnpm i --frozen-lockfile
-          cdk -c env=${{ inputs.environment }} diff
+          cdk -c env=${{ inputs.environment }} deploy --require-approval never
