@@ -29,6 +29,7 @@ if (!env) {
 env = StringHelper.toPascalCase(env);
 
 new AppStack(app, `HelloWorld${env}`, {
+  environment: env,
   env: { account: app.account, region: app.region}
 });
 
