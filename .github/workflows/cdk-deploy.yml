@@ -1,14 +1,14 @@
 on:
   workflow_call:
-#    secrets:
-#      aws_assume_role:
-#        description: "AWS role to assume"
-#        required: false
-#    inputs:
-#      environment:
-#        description: "Environment to deploy to"
-#        required: true
-#        type: string
+    secrets:
+      aws_assume_role:
+        description: "AWS role to assume"
+        required: false
+    inputs:
+      environment:
+        description: "Environment to deploy to"
+        required: true
+        type: string
 jobs:
   diff:
     runs-on: ubuntu-latest
