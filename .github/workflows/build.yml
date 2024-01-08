@@ -4,9 +4,9 @@ on:
     branches:
       - main
       - hotfix/*
-  permissions:
-    id-token: write
-    contents: write
+permissions:
+  id-token: write
+  contents: write
 jobs:
   build-maven:
     name: Build Maven
