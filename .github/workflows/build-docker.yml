@@ -75,3 +75,13 @@ jobs:
           dest-username: "${{ steps.ecr-login.outputs.docker_username_public_ecr_aws }}"
           dest-password: "${{ steps.ecr-login.outputs.docker_password_public_ecr_aws }}"
           multi-arch: "all"
+
+      - name: Create Version Artifact
+        run: |
+          echo ${{ inputs.version }} > docker-version.txt
+
+      - name: Upload Docker Image Tag
+        uses: actions/upload-artifact@v3
+        with:
+          name: docker-version
+          path: docker-version.txt

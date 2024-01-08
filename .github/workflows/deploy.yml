@@ -9,10 +9,7 @@ on:
         description: "Environment to deploy to"
         required: true
         type: string
-      version:
-        description: "Version of the project"
-        required: true
-        type: string
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -21,6 +18,9 @@ jobs:
     environment: ${{ inputs.environment }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v3
+        with:
+          name: docker-version
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -34,6 +34,18 @@ jobs:
           cd cdk
           pnpm i --frozen-lockfile
           cdk -c env=${{ inputs.environment }} deploy --require-approval never
+
+      # TODO Get rid of separate role
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: "${{ vars.AWS_ASSUME_ROLE_DEPLOY }}"
+          aws-region: "us-east-2"
+
+      - name: Get Docker Image Tag
+        shell: bash
+        run: | 
+          echo "IMAGE_TAG=$(cat docker-version.txt)" >> $GITHUB_ENV
 
       - name: Setup Cluster Access
         run: |
@@ -49,4 +61,4 @@ jobs:
         env:
           KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}
         with:
-          command: helm upgrade --install --wait --atomic --set image.tag=${{ inputs.version }} -f helm-charts/truemark/values.yaml hello-world helm-charts/truemark
+          command: helm upgrade --install --wait --atomic --set image.tag=$IMAGE_TAG -f helm-chart/hello-world/values.yaml hello-world helm-chart/hello-world
