@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - hotfix/*
 permissions:
   id-token: write
   contents: write
@@ -17,7 +18,7 @@ jobs:
   build-docker:
     name: Build Docker
     uses: ./.github/workflows/build-docker.yml
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/hotfix/')
     with:
       version: 61.${{ github.run_number }}.${{ github.run_attempt }}
       image_name: "truemark/helloworld-java"
@@ -35,7 +36,7 @@ jobs:
 #      aws_assume_role: ${{ secrets.AWS_ASSUME_ROLE }}
     needs: [ build-maven ]
   deploy-stage:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/hotfix/')
     name: Deploy to Stage
     uses: ./.github/workflows/deploy.yml
     with:
@@ -50,7 +51,7 @@ jobs:
       aws_assume_role: ${{ secrets.AWS_ASSUME_ROLE }}
     needs: [diff-stage, build-docker]
   eks-deploy-prod:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/hotfix/')
     name: Deploy to Prod
     uses: ./.github/workflows/deploy.yml
     with:
