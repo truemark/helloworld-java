@@ -41,7 +41,7 @@ jobs:
     uses: ./.github/workflows/deploy.yml
     with:
       environment: "stage"
-    needs: [diff-stage, docker-build]
+    needs: [diff-stage, build-docker]
   cdk-deploy-prod:
     name: CDK deploy to Prod
     uses: ./.github/workflows/cdk-deploy.yml
