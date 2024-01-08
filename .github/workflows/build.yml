@@ -3,11 +3,6 @@ on:
   push:
     branches:
       - main
-      - hotfix/*
-<<<<<<< HEAD
-=======
-      - fixing-rollback
->>>>>>> 777d763 (Attempting to fix the rollback process.)
 permissions:
   id-token: write
   contents: write
