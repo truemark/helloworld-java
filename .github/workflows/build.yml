@@ -58,4 +58,3 @@ jobs:
     needs: [cdk-deploy-prod]
     secrets:
       aws_assume_role: ${{ secrets.AWS_ASSUME_ROLE }}
-
