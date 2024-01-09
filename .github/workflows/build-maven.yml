@@ -34,7 +34,7 @@ jobs:
           java-version: ${{ inputs.java_version }}
           distribution: ${{ inputs.java_distribution }}
       - name: Build Java
-        run: ./mvnw -Drevision=${{ inputs.version }} package
+        run: ./mvnw -B -ntp -Drevision=${{ inputs.version }} package
       - name: Upload Target
         uses: actions/upload-artifact@v3
         with:
