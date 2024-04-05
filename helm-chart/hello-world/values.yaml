@@ -4,6 +4,7 @@
 
 replicaCount: 1
 
+
 image:
   repository: public.ecr.aws/truemark/helloworld-java
   pullPolicy: IfNotPresent
