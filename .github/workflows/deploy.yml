@@ -29,12 +29,6 @@ jobs:
           role-to-assume: "${{ vars.AWS_ASSUME_ROLE_DEPLOY }}"
           aws-region: "us-east-2"
 
-      - name: CDK Deploy
-        run: |
-          cd cdk
-          pnpm i --frozen-lockfile
-          cdk -c env=${{ inputs.environment }} deploy --require-approval never
-
       # TODO Get rid of separate role
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
