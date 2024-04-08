@@ -25,4 +25,4 @@ jobs:
 
       - name: CDK Diff
         run: |
-          cdk -c env=${{ inputs.environment }} diff
+          cd cdk && cdk -c env=${{ inputs.environment }} diff

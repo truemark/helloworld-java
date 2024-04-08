@@ -25,4 +25,4 @@ jobs:
 
       - name: CDK Deploy
         run: |
-          cdk -c env=${{ inputs.environment }} deploy --require-approval never
+          cd cdk && cdk -c env=${{ inputs.environment }} deploy --require-approval never
