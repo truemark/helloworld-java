@@ -25,4 +25,6 @@ jobs:
 
       - name: CDK Deploy
         run: |
-          cd cdk && cdk -c env=${{ inputs.environment }} deploy --require-approval never
+          cd cdk
+          pnpm i --frozen-lockfile
+          cdk -c env=${{ inputs.environment }} deploy --require-approval never
