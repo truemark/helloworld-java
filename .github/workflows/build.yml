@@ -29,11 +29,11 @@ jobs:
     needs: [build-maven]
   diff-stage:
     name: CDK diff to Stage
-    uses: ./.github/workflows/diff.yml
-#    with:
-#      environment: "stage"
-#    secrets:
-#      aws_assume_role: ${{ secrets.AWS_ASSUME_ROLE }}
+    uses: ./.github/workflows/cdk-diff.yml
+    with:
+      environment: "stage"
+    secrets:
+      aws_assume_role: ${{ secrets.AWS_ASSUME_ROLE }}
     needs: [ build-maven ]
   deploy-stage:
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/hotfix/')

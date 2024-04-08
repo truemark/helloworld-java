@@ -23,6 +23,6 @@ jobs:
           role-to-assume: "${{ secrets.aws_assume_role }}"
           aws-region: "us-east-2"
 
-      - name: CDK Deploy
+      - name: CDK Diff
         run: |
-          cdk -c env=${{ inputs.environment }} deploy --require-approval never
+          cdk -c env=${{ inputs.environment }} diff
