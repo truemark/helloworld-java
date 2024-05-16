@@ -62,8 +62,8 @@ jobs:
             --push \
             --platform linux/arm64,linux/amd64 \
             -f Dockerfile \
-            -t ${{ inputs.image_name }}:${{ inputs.version }} \
             -t ${{ inputs.image_name }}:latest \
+            -t ${{ inputs.image_name }}:${{ inputs.version }} \
             .
       - name: Copy beta to ECR
         uses: truemark/skopeo-copy-action@v1
