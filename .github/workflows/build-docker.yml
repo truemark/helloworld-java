@@ -81,7 +81,7 @@ jobs:
       - name: Copy latest to ECR
         uses: truemark/skopeo-copy-action@v1
         with:
-          src-image: "docker://truemark/${{ inputs.image_name }}:latest"
+          src-image: "docker://${{ inputs.image_name }}:latest"
           dest-image: "docker://public.ecr.aws/truemark/${{ inputs.image_name }}:latest"
           src-username: "${{ secrets.docker_hub_username }}"
           src-password: "${{ secrets.docker_hub_password }}"
