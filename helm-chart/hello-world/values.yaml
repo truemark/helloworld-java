@@ -76,11 +76,11 @@ istio:
       tls:
         httpsRedirect: true
       hosts:
-        - "*"
+        - "hello.stage.truemark.io"
     - port:
         number: 443
         name: https
         protocol: HTTP
       hosts:
-        - "*"
+        - "hello.stage.truemark.io"
 

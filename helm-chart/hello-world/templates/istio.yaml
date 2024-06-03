@@ -16,7 +16,7 @@ metadata:
   name: {{ include "truemark.fullname" . }}
 spec:
   hosts:
-    - "*"
+    - "hello.stage.truemark.io"
   gateways:
     - {{ include "truemark.fullname" . }}
   http:
