@@ -60,4 +60,4 @@ jobs:
         env:
           KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}
         with:
-          command: helm upgrade --install --wait --atomic --set image.tag=$IMAGE_TAG -f helm-chart/hello-world/values.yaml hello-world helm-chart/hello-world
+          command: helm upgrade --install -n hello-world --create-namespace --wait --atomic --set image.tag=$IMAGE_TAG -f helm-chart/hello-world/values.yaml hello-world helm-chart/hello-world
