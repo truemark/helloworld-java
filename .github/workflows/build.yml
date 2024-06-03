@@ -24,7 +24,7 @@ jobs:
       version: 61.${{ github.run_number }}.${{ github.run_attempt }}
       image_name: "truemark/helloworld-java"
     secrets:
-      aws_assume_role: ${{ secrets.AWS_ASSUME_ROLE }}
+      aws_assume_role: ${{ secrets.AWS_ASSUME_ROLE_DEPLOY }}
       docker_hub_username: ${{ secrets.DOCKER_HUB_USERNAME }}
       docker_hub_password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
     needs: [build-maven]
@@ -37,7 +37,7 @@ jobs:
       aws_assume_role: ${{ secrets.AWS_ASSUME_ROLE }}
     needs: [ build-maven ]
   deploy-stage:
-    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/hotfix/')
+    if: github.ref == 'refs/heads/develop' ||startsWith(github.ref, 'refs/heads/hotfix/')
     name: Deploy to Stage
     uses: ./.github/workflows/deploy.yml
     with:
