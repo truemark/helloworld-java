@@ -4,6 +4,9 @@
 
 replicaCount: 1
 
+env:
+  - name: MESSAGE
+    value: "Hello, World from the Helm!"
 
 image:
   repository: public.ecr.aws/truemark/helloworld-java
